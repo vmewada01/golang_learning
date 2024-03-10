@@ -9,7 +9,38 @@ import (
 
 func main() {
 	fmt.Println("server get request")
-	PerformGetRequest()
+	// PerformGetRequest()
+	PerformPostRequest()
+}
+
+
+func PerformPostRequest(){
+	const myurl = "http://localhost:5000/users"
+
+	requestBody := strings.NewReader(`
+	
+	{
+        "firstName":"vishal",
+		"lastName":"kumar",
+        "phoneNumber":"0349857",
+        "address":"sehore"
+       
+    }`)
+    
+    resp, err := http.Post(myurl,"application/json", requestBody)
+    
+    if err!= nil {
+        panic(err)
+    }
+    defer resp.Body.Close()
+    
+    body, err := ioutil.ReadAll(resp.Body)
+    
+    if err!= nil {
+        panic(err)
+    }
+    
+    fmt.Println(string(body))
 }
 
 func PerformGetRequest(){
