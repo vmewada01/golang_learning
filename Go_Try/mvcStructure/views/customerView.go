@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func RenderUserTemplate(w http.ResponseWriter, user *models.UserStructure) {
+func RenderCustomerTemplate(w http.ResponseWriter, user *models.CustomerStructure) {
    // Encode user data as JSON
    jsonData, err := json.Marshal(user)
    if err != nil {
@@ -15,7 +15,7 @@ func RenderUserTemplate(w http.ResponseWriter, user *models.UserStructure) {
 	   return
    }
 
-   fmt.Println("created user response",string(jsonData))
+   fmt.Println("created customer response",string(jsonData))
    // Set content type and write JSON response
    w.Header().Set("Content-Type", "application/json")
    w.WriteHeader(http.StatusOK)

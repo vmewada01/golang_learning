@@ -7,15 +7,15 @@ import (
 	"net/http"
 )
 
-func RenderUserTemplate(w http.ResponseWriter, user *models.UserStructure) {
-   // Encode user data as JSON
-   jsonData, err := json.Marshal(user)
+func RenderTodosTemplate(w http.ResponseWriter, todo *models.TodosModel) {
+   // Encode todo data as JSON
+   jsonData, err := json.Marshal(todo)
    if err != nil {
 	   http.Error(w, "Error encoding user data to JSON", http.StatusInternalServerError)
 	   return
    }
 
-   fmt.Println("created user response",string(jsonData))
+   fmt.Println("created todo response",string(jsonData))
    // Set content type and write JSON response
    w.Header().Set("Content-Type", "application/json")
    w.WriteHeader(http.StatusOK)
