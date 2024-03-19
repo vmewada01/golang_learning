@@ -1,12 +1,12 @@
 package main
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"time"
 
 	"github.com/google/uuid"
-	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
@@ -26,30 +26,54 @@ type Address struct {
 	// Define fields for Address struct here
 }
 
+type Person struct {
+	Name   string `json:"name,omitempty"`
+	Age    int    `json:"age"`
+	Email  string `json:"email,omitempty"`
+	Active bool   `json:"active,omitempty"`
+}
+
 func main() {
-	dsn := "root:password@tcp(127.0.0.1:3306)/user_db?charset=utf8mb4&parseTime=True&loc=Local"
 
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
-	if err != nil {
-		panic(err)
-	}
 
-	// Create user
-	user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()}
-	result := db.Create(&user)
+    p1 := Person{Name: "Alice", Age: 30, Email: "", Active: true}
+	p2 := Person{Name: "", Age: 0, Email: "bob@example.com", Active: false}
 
-    fmt.Println("result", result)
-	// GORM supports create from map:
-	db.Model(&User{}).Create(map[string]interface{}{
-		"Name": "jinzhu", "Age": 18,
-	})
+	// Marshal structs to JSON
+	jsonData1, _ := json.Marshal(p1)
+	jsonData2, _ := json.Marshal(p2)
 
-	// Create With Associations
-	db.Create(&User{
-		Name:      "jinzhu",
-		Confirmed: true,
-		Address:   Address{},
-	})
+	// Print JSON data
+	fmt.Println(string(jsonData1)) // {"name":"Alice","age":30,"active":true}
+	fmt.Println(string(jsonData2)) // {"email":"bob@example.com"}
+
+	fmt.Println("vishal p1 print",p1)
+	fmt.Println("vishal p2 print", p2)
+
+
+	// dsn := "root:password@tcp(127.0.0.1:3306)/user_db?charset=utf8mb4&parseTime=True&loc=Local"
+
+	// db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	// // Create user
+	// user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()}
+	// result := db.Create(&user)
+
+    // fmt.Println("result", result)
+	// // GORM supports create from map:
+	// db.Model(&User{}).Create(map[string]interface{}{
+	// 	"Name": "jinzhu", "Age": 18,
+	// })
+
+	// // Create With Associations
+	// db.Create(&User{
+	// 	Name:      "jinzhu",
+	// 	Confirmed: true,
+	// 	Address:   Address{},
+	// })
 }
 
 // Hooks on Create Actions
